@@ -1,25 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import list from './data.js'
+import RewardsReview from './Rewards-review'
 
 function App() {
+
+   let [data, setData] =  useState(list);
+
+   const monthlyTransactions = data.map((e, index) => (
+     <RewardsReview key={index} list={e}/>
+   ))
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1>Rewards Points</h1>
+      {monthlyTransactions}
+    </>
   );
 }
 
