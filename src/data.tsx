@@ -1,17 +1,25 @@
-let data = [];
-const list = () => {
+
+type Trans = {
+	date: object,
+	purchaseAmount: number,
+	rewardPoints: Function
+}
+
+let data: Array<any> = [];
+
+const list = ():Array<Trans[]> => {
     data = [];
 	getList();
-	return monthlyRecords(); //returns  [[], [], []]
+	return monthlyRecords();
 }
 
 
-const addPurchaseHistory = (d, p) => {
- const da = new Transaction(d, p);
- data.push(da);
+const addPurchaseHistory = (d: string, p: number): void => {
+	const da = new (Transaction as any)(d, p);
+	data.push(da);
 }
 
-const getList = () => {
+const getList = (): void => {
 	addPurchaseHistory('2020-06-01', 40);
 	addPurchaseHistory('2020-07-04', 50);
 	addPurchaseHistory('2020-08-05', 60);
@@ -24,16 +32,16 @@ const getList = () => {
 	addPurchaseHistory('2020-07-23', 130);
 }
 
-const monthlyRecords = () => {
+const monthlyRecords = (): Array<Trans[]> => {
 	let threeMonthRecords = [];
 	for(let i =0; i<3; i++) {
-		let oneMonthList = data.filter(data => data.date.getMonth() === (new Date()).getMonth() - i);
-		threeMonthRecords[i] = oneMonthList;
+		let oneMonthList = data.filter(item => !!item && item.date.getMonth() === (new Date()).getMonth() - i);
+		threeMonthRecords[i] = !!oneMonthList && oneMonthList.sort((a, b) => a.date - b.date);
 	}
 	return threeMonthRecords;
 }
 
-function Transaction(date, purchaseAmount) {
+function Transaction(this: Trans,  date: string, purchaseAmount: number): void {
     this.date = new Date(date);
     this.purchaseAmount = purchaseAmount;
     this.rewardPoints = () => {
